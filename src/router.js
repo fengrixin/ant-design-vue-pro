@@ -1,10 +1,11 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [
@@ -92,9 +93,21 @@ export default new Router({
       ]
     },
     {
-      path: "*",
-      name: "404",
-      component: Home
-    }
+      path: "/404",
+      component: () => import(/* webpackChunkName: "404" */ "./views/404.vue"),
+      hidden: true
+    },
+    { path: "*", redirect: "/404", hidden: true }
   ]
 });
+
+router.beforeEach((to, form, next) => {
+  NProgress.start();
+  next();
+});
+
+router.afterEach(() => {
+  NProgress.done();
+});
+
+export default router;

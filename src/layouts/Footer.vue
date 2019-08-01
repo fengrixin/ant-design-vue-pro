@@ -1,6 +1,6 @@
 <template>
   <div class="footer-view">
-    Footer
+    Ant Design ©2019 Created by lp
   </div>
 </template>
 
