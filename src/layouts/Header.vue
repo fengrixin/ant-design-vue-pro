@@ -10,4 +10,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.header-view {
+  float: right;
+  margin-right: 20px;
+}
+</style>
