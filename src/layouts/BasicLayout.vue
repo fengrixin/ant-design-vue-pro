@@ -63,7 +63,9 @@ export default {
   height: 48px;
   line-height: 48px;
 }
-
+.ant-layout-footer {
+  padding-bottom: 10px;
+}
 .trigger {
   padding: 0 20px;
   line-height: 48px;

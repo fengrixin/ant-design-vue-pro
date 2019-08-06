@@ -15,6 +15,7 @@ const router = new Router({
       component: () =>
         import(/* webpackChunkName: "layout" */ "./layouts/UserLayout.vue"),
       redirect: "/user/login",
+      hidden: true,
       children: [
         {
           path: "/user/login",
@@ -40,11 +41,13 @@ const router = new Router({
           path: "/dashboard",
           name: "dashboard",
           component: { render: h => h("router-view") },
+          meta: { icon: "dashboard", title: "仪表盘" },
           redirect: "/dashboard/analysis",
           children: [
             {
               path: "/dashboard/analysis",
               name: "analysis",
+              meta: { title: "分析页" },
               component: () =>
                 import(/* webpackChunkName: "dashboard" */ "./views/dashboard/analysis.vue")
             }
@@ -54,37 +57,43 @@ const router = new Router({
           path: "/form",
           name: "form",
           component: { render: h => h("router-view") },
+          meta: { icon: "form", title: "表单" },
           redirect: "/form/basic-form",
           children: [
             {
               path: "/form/basic-form",
               name: "basicForm",
               component: () =>
-                import(/* webpackChunkName: "form" */ "./views/form/basicForm.vue")
+                import(/* webpackChunkName: "form" */ "./views/form/basicForm.vue"),
+              meta: { title: "基础表单" }
             },
             {
               path: "/form/step-form",
               name: "stepForm",
               component: () =>
                 import(/* webpackChunkName: "form" */ "./views/form/stepForm.vue"),
+              meta: { title: "分布表单" },
               children: [
                 {
                   path: "/form/step-form/info",
                   name: "info",
                   component: () =>
-                    import(/* webpackChunkName: "form" */ "./views/form/step/info.vue")
+                    import(/* webpackChunkName: "form" */ "./views/form/step/info.vue"),
+                  meta: { title: "表单内容" }
                 },
                 {
                   path: "/form/step-form/confirm",
                   name: "info",
                   component: () =>
-                    import(/* webpackChunkName: "form" */ "./views/form/step/confirm.vue")
+                    import(/* webpackChunkName: "form" */ "./views/form/step/confirm.vue"),
+                  meta: { title: "表单提交" }
                 },
                 {
                   path: "/form/step-form/result",
                   name: "info",
                   component: () =>
-                    import(/* webpackChunkName: "form" */ "./views/form/step/result.vue")
+                    import(/* webpackChunkName: "form" */ "./views/form/step/result.vue"),
+                  meta: { title: "表单结果" }
                 }
               ]
             }

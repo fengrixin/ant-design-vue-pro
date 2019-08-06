@@ -1,49 +1,30 @@
 <template>
   <div style="width: 218px">
     <a-menu
-      :defaultSelectedKeys="['1']"
-      :defaultOpenKeys="['sub1']"
+      :selectedKeys="selectedKeys"
+      :openKeys="openKeys"
       mode="inline"
       :theme="theme"
       :inlineCollapsed="collapsed"
     >
-      <a-menu-item key="1">
-        <a-icon type="pie-chart" />
-        <span>Option 1</span>
-      </a-menu-item>
-      <a-menu-item key="2">
-        <a-icon type="desktop" />
-        <span>Option 2</span>
-      </a-menu-item>
-      <a-menu-item key="3">
-        <a-icon type="inbox" />
-        <span>Option 3</span>
-      </a-menu-item>
-      <a-sub-menu key="sub1">
-        <span slot="title"
-          ><a-icon type="mail" /><span>Navigation One</span></span
-        >
-        <a-menu-item key="5">Option 5</a-menu-item>
-        <a-menu-item key="6">Option 6</a-menu-item>
-        <a-menu-item key="7">Option 7</a-menu-item>
-        <a-menu-item key="8">Option 8</a-menu-item>
-      </a-sub-menu>
-      <a-sub-menu key="sub2">
-        <span slot="title"
-          ><a-icon type="appstore" /><span>Navigation Two</span></span
-        >
-        <a-menu-item key="9">Option 9</a-menu-item>
-        <a-menu-item key="10">Option 10</a-menu-item>
-        <a-sub-menu key="sub3" title="Submenu">
-          <a-menu-item key="11">Option 11</a-menu-item>
-          <a-menu-item key="12">Option 12</a-menu-item>
-        </a-sub-menu>
-      </a-sub-menu>
+      <template v-for="item in menuData">
+        <a-menu-item v-if="!item.children" :key="item.path">
+          <a-icon v-if="item.meta.icon" :type="item.meta.icon" />
+          <span>{{ item.meta.title }}</span>
+        </a-menu-item>
+        <sub-menu v-else :menu-info="item" :key="item.path" />
+      </template>
     </a-menu>
   </div>
 </template>
 
 <script>
+/*
+ * recommend SubMenu.vue https://github.com/vueComponent/ant-design-vue/blob/master/components/menu/demo/SubMenu.vue
+ * SubMenu1.vue https://github.com/vueComponent/ant-design-vue/blob/master/components/menu/demo/SubMenu1.vue
+ * */
+import SubMenu from "./SubMenu";
+
 export default {
   name: "SideMenu",
   props: {
@@ -52,11 +33,35 @@ export default {
       default: "dark"
     }
   },
+  components: {
+    "sub-menu": SubMenu
+  },
   data() {
+    const menuData = this.getMenuData(this.$router.options.routes);
     return {
-      collapsed: false
+      collapsed: false,
+      menuData,
+      selectedKeys: [],
+      openKeys: []
     };
   },
-  methods: {}
+  methods: {
+    getMenuData(routes) {
+      const menuData = [];
+      routes.forEach(item => {
+        if (item.name && !item.hidden) {
+          const newItem = { ...item };
+          delete newItem.children;
+          if (item.children && !item.hidden) {
+            newItem.children = this.getMenuData(item.children);
+          }
+          menuData.push(newItem);
+        } else if (!item.hidden && item.children) {
+          menuData.push(...this.getMenuData(item.children));
+        }
+      });
+      return menuData;
+    }
+  }
 };
 </script>
