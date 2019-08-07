@@ -10,7 +10,7 @@
         collapsible
       >
         <div class="logo">{{ collapsed ? "Pro" : "Ant Design Vue Pro" }}</div>
-        <side-menu :theme="navTheme"></side-menu>
+        <side-menu :theme="navTheme" :layout="collapsed"></side-menu>
       </a-layout-sider>
       <a-layout>
         <a-layout-header style="background: #fff; padding: 0">
