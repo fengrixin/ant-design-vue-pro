@@ -15,6 +15,7 @@
       <a-layout>
         <a-layout-header style="background: #fff; padding: 0">
           <a-icon
+            v-auth="['admin']"
             class="trigger"
             :type="collapsed ? 'menu-fold' : 'menu-unfold'"
             @click="collapsed = !collapsed"
@@ -28,7 +29,9 @@
           <Footer></Footer>
         </a-layout-footer>
       </a-layout>
-      <setting-drawer></setting-drawer>
+      <authorized :authority="['admin']">
+        <setting-drawer></setting-drawer>
+      </authorized>
     </a-layout>
   </div>
 </template>
@@ -63,9 +66,11 @@ export default {
   height: 48px;
   line-height: 48px;
 }
+
 .ant-layout-footer {
   padding-bottom: 10px;
 }
+
 .trigger {
   padding: 0 20px;
   line-height: 48px;
